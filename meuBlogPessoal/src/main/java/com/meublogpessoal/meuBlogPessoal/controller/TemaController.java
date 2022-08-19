@@ -1,6 +1,7 @@
 package com.meublogpessoal.meuBlogPessoal.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.meublogpessoal.meuBlogPessoal.model.TemaModel;
 import com.meublogpessoal.meuBlogPessoal.repository.TemaRepository;
@@ -55,6 +57,8 @@ public class TemaController {
 	
 	@DeleteMapping ("/{id}")
 	public void delete (@PathVariable long id) {
+		Optional<TemaModel> tema = repository.findById(id);
+		if (tema.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		repository.deleteById(id);
 	}
 }
